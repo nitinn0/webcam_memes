@@ -1,3 +1,4 @@
+import platform
 import time
 from pathlib import Path
 
@@ -46,13 +47,20 @@ def load_meme(path):
     return image
 
 
-def open_camera(index=0):
-    """Apre la webcam provando i backend Windows e attende il primo frame."""
-    backends = (
+def camera_backends():
+    """Windows backends fail on macOS and never return a frame."""
+    if platform.system() == "Darwin":
+        return (("AVFoundation", cv2.CAP_AVFOUNDATION), ("automatico", cv2.CAP_ANY))
+    return (
         ("DirectShow", cv2.CAP_DSHOW),
         ("Media Foundation", cv2.CAP_MSMF),
         ("automatico", cv2.CAP_ANY),
     )
+
+
+def open_camera(index=0):
+    """Apre la webcam e attende il primo frame."""
+    backends = camera_backends()
     attempts = []
 
     for backend_name, backend in backends:
@@ -87,8 +95,9 @@ def open_camera(index=0):
     details = "; ".join(attempts)
     raise RuntimeError(
         "Non riesco a ricevere immagini dalla webcam. "
-        "Chiudi eventuali programmi che la stanno usando e controlla i permessi "
-        f"di Windows. Tentativi: {details}"
+        "Chiudi eventuali programmi che la stanno usando. Su Mac consenti la "
+        "fotocamera a Terminal in Impostazioni di Sistema > Privacy e sicurezza "
+        f"> Fotocamera. Tentativi: {details}"
     )
 
 
