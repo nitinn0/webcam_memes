@@ -24,18 +24,18 @@ HAND_MODEL = BASE_DIR / "hand_landmarker.task"
 FACE_MODEL = BASE_DIR / "face_landmarker.task"
 SEGMENTER_MODEL = BASE_DIR / "models" / "selfie_segmenter_landscape.tflite"
 EFFECTS = (
-    ("meme", "Meme Webcam", "Pose delle mani e meme sul volto"),
-    ("gojo", "Gojo Webcam", "Unlimited Void / dominio cosmico"),
-    ("sukuna", "Sukuna Webcam", "Malevolent Shrine / dominio e teschi"),
+    ("meme", "Meme Webcam", "Hand poses and a meme on your face"),
+    ("gojo", "Gojo Webcam", "Unlimited Void / cosmic domain"),
+    ("sukuna", "Sukuna Webcam", "Malevolent Shrine / domain and skulls"),
 )
 
 
 def choose_effect():
     """Select before opening any camera, detector or audio device."""
-    title = "Webcam Memes - Scegli effetto"
+    title = "Webcam Memes - Choose effect"
     selected = [None]
     image = np.full((470,720,3),(26,29,34),np.uint8)
-    cv2.putText(image,"SCEGLI L'EFFETTO WEBCAM",(55,62),
+    cv2.putText(image,"CHOOSE A WEBCAM EFFECT",(55,62),
                 cv2.FONT_HERSHEY_SIMPLEX,.87,(240,245,247),2,cv2.LINE_AA)
     for index,(_,label,detail) in enumerate(EFFECTS):
         top = 100 + index*108
@@ -45,7 +45,7 @@ def choose_effect():
                     cv2.FONT_HERSHEY_SIMPLEX,.80,(240,245,247),2,cv2.LINE_AA)
         cv2.putText(image,detail,(75,top+65),
                     cv2.FONT_HERSHEY_SIMPLEX,.52,(179,195,201),1,cv2.LINE_AA)
-    cv2.putText(image,"Clicca una voce o premi 1, 2, 3.  Q / ESC: esci.",(50,450),
+    cv2.putText(image,"Click an option or press 1, 2, 3.  Q / ESC: quit.",(50,450),
                 cv2.FONT_HERSHEY_SIMPLEX,.50,(179,195,201),1,cv2.LINE_AA)
 
     def on_mouse(event,x,y,flags,userdata):
